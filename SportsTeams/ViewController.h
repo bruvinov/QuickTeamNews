@@ -28,7 +28,7 @@
 -(void)createButtons;
 -(void)createCollectionView;
 
--(IBAction)selectedLeague:(id)sender;
+//-(IBAction)selectedLeague:(id)sender;
 
 
 @end

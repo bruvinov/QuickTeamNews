@@ -21,64 +21,24 @@
 -(void)createButtons {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
-    //CGFloat screenHeight = screenRect.size.height;
-    CGFloat four = 4;
+    CGFloat screenHeight = screenRect.size.height;
+//    CGFloat four = 4;
+    NSArray *leaguesArray = [NSArray arrayWithObjects:@"NBA 🏀", @"NFL 🏈", @"NHL 🏒", @"MLB ⚾️", nil];
+    UISegmentedControl *leagueSelectControl = [[UISegmentedControl alloc] initWithItems:leaguesArray];
+    leagueSelectControl.frame = CGRectMake(-2, screenHeight-40, screenWidth+4, 41);
+    [leagueSelectControl addTarget:self action:@selector(segmentControlAction:) forControlEvents: UIControlEventValueChanged];
+    leagueSelectControl.backgroundColor = [UIColor colorWithRed: 251.0/255.0 green: 247.0/255.0 blue: 249.0/255.0 alpha: 1.0];;
+    leagueSelectControl.tintColor = [UIColor blackColor];
     
-    CGFloat leagueButtonWidth = screenWidth/four;
-    CGFloat leagueButtonHeight = 35;
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject:[UIFont fontWithName:@"Helvetica-Light" size:17.0] forKey:NSFontAttributeName];
+    NSDictionary *highlightAttributes = [NSDictionary dictionaryWithObject:[UIFont fontWithName:@"Helvetica-Bold" size:17.0] forKey:NSFontAttributeName];
+    NSDictionary *backgroundAttributes = [NSDictionary dictionaryWithObject:[UIColor lightGrayColor] forKey:NSForegroundColorAttributeName];
     
-    //NBA BUTTON
-    UIColor *nbaColor = [UIColor colorWithRed: 191.0/255.0 green: 119.0/255.0 blue:64.0/255.0 alpha: 1.0];
-    self.nbaButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 20, leagueButtonWidth, leagueButtonHeight)];
-    self.nbaButton.backgroundColor = nbaColor;
-    [self.nbaButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.nbaButton.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:17]];
-    self.nbaButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.nbaButton setTitle:@"NBA" forState:UIControlStateNormal];
+    [leagueSelectControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    [leagueSelectControl setTitleTextAttributes:highlightAttributes forState:UIControlStateHighlighted];
+    [leagueSelectControl setTitleTextAttributes:backgroundAttributes forState:UIControlStateSelected];
     
-    [self.nbaButton addTarget:self action:@selector(selectedLeague:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:self.nbaButton];
-    
-    //NFL BUTTON
-    UIColor *nflColor = [UIColor colorWithRed: 73.0/255.0 green: 43.0/255.0 blue:24/255.0 alpha: 1.0];
-    self.nflButton = [[UIButton alloc]initWithFrame:CGRectMake(leagueButtonWidth, 20, leagueButtonWidth, leagueButtonHeight)];
-    self.nflButton.backgroundColor = nflColor;
-    [self.nflButton setTitle:@"NFL" forState:UIControlStateNormal];
-    [self.nflButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.nflButton.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:17]];
-    self.nflButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [self.nflButton addTarget:self action:@selector(selectedLeague:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:self.nflButton];
-
-    //NHL BUTTON
-    UIColor *nhlColor = [UIColor colorWithRed: 52.0/255.0 green: 120.0/255.0 blue:157.0/255.0 alpha: 1.0];
-    self.nhlButton = [[UIButton alloc]initWithFrame:CGRectMake(leagueButtonWidth * 2, 20, leagueButtonWidth, leagueButtonHeight)];
-    self.nhlButton.backgroundColor = nhlColor;
-    [self.nhlButton setTitle:@"NHL" forState:UIControlStateNormal];
-    [self.nhlButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.nhlButton.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:17]];
-    self.nhlButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [self.nhlButton addTarget:self action:@selector(selectedLeague:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:self.nhlButton];
-
-    //MLB BUTTON
-    
-    UIColor *mlbColor = [UIColor colorWithRed: 33.0/255.0 green: 80.0/255.0 blue:27.0/255.0 alpha: 1.0];
-    self.mlbButton = [[UIButton alloc]initWithFrame:CGRectMake(leagueButtonWidth * 3, 20, leagueButtonWidth, leagueButtonHeight)];
-    self.mlbButton.backgroundColor = mlbColor;
-    [self.mlbButton setTitle:@"MLB" forState:UIControlStateNormal];
-    [self.mlbButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.mlbButton.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:17]];
-    self.mlbButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [self.mlbButton addTarget:self action:@selector(selectedLeague:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:self.mlbButton];
+    [self.view addSubview:leagueSelectControl];
 }
 
 -(void)createCollectionView {
@@ -93,8 +53,8 @@
     [layout setScrollDirection:UICollectionViewScrollDirectionVertical];
     
     //INIT COLLECTION VIEW OBJECT
-    self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(20, 60, screenWidth-40, screenHeight-75) collectionViewLayout:layout];
-    [self.collectionView setBackgroundColor:[UIColor whiteColor]];
+    self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(20, 20, screenWidth-40, screenHeight-61) collectionViewLayout:layout];
+    [self.collectionView setBackgroundColor:[UIColor clearColor]];
     self.collectionView.alwaysBounceVertical = YES;
     
     self.collectionView.delegate = self;
@@ -110,7 +70,7 @@
     CGFloat two = 2;
     
     self.selectLeagueLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, screenHeight/two, screenWidth, 40)];
-    self.selectLeagueLabel.text = @"select one of the above leagues to get started";
+    self.selectLeagueLabel.text = @"select one of the leagues below to get started";
     self.selectLeagueLabel.font = [UIFont fontWithName:@"Helvetica-light" size:14];
     self.selectLeagueLabel.textAlignment = NSTextAlignmentCenter;
     
@@ -120,30 +80,27 @@
 
 /*===================================ACTIONS===================================*/
 
-
--(IBAction)selectedLeague:(id)sender {
-    UIButton *senderButton = sender;
-    self.view.backgroundColor = senderButton.backgroundColor;
-    self.collectionView.backgroundColor = senderButton.backgroundColor;
+- (void)segmentControlAction:(UISegmentedControl *)segment {
     self.selectLeagueLabel.hidden = YES;
-    if ([sender isEqual:self.nbaButton]) {
+    if(segment.selectedSegmentIndex == 0) {
         self.leagueSelected = [[NSArray alloc]initWithArray:[self.teams objectForKey:@"NBA"]];
         [self.collectionView reloadData];
-    } else if ([sender isEqual:self.nflButton]) {
+    }
+    if(segment.selectedSegmentIndex == 1) {
         self.leagueSelected = [[NSArray alloc]initWithArray:[self.teams objectForKey:@"NFL"]];
         [self.collectionView reloadData];
-    } else if ([sender isEqual:self.nhlButton]) {
+    }
+    if(segment.selectedSegmentIndex == 2) {
         self.leagueSelected = [[NSArray alloc]initWithArray:[self.teams objectForKey:@"NHL"]];
         [self.collectionView reloadData];
-    } else if ([sender isEqual:self.mlbButton]) {
+    }
+    if(segment.selectedSegmentIndex == 3) {
         self.leagueSelected = [[NSArray alloc]initWithArray:[self.teams objectForKey:@"MLB"]];
         [self.collectionView reloadData];
     }
 }
 
-
 /*=========================COLLECTION VIEW DELEGATE AND DATA SOURCE=========================*/
-
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.leagueSelected.count;
@@ -338,6 +295,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
     NSString *currentOrientation;
     BOOL didChangeOrientation;
     
@@ -357,12 +315,11 @@
     if (didChangeOrientation) {
         [self readjustViews];
     }
-    
-
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor colorWithRed: 254.0/255.0 green: 251.0/255.0 blue: 252.0/255.0 alpha: 1.0];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     
     if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation ]== UIDeviceOrientationLandscapeRight) {
